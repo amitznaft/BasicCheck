@@ -6,7 +6,7 @@ shift 2
 cd $folderName
 make 
 checkMake=$?
-if [ “$checkMake” -gt “0” ] ; then
+if [ “$checkMake” -gt 0 ] ; then
         echo "Compilation Error"
         exit 7	
 fi
