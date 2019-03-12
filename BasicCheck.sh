@@ -15,7 +15,7 @@ fi
 
 valgrind —-leak-check=full —-error-exitcode=1 ./$executeble $@ &> /dev/null
 valout=$?
-if [[ valout -eq '0' ]]; then
+if [[ $valout -eq '0' ]]; then
         leaks=0
 else
         leaks=1
@@ -25,7 +25,7 @@ fi
 valgrind --tool=helgrind —-error-exitcode=1 --log-file=/dev/null ./$executeble
 threads=$?
 
-if [[ threads -eq '0' ]]; then
+if [[ $threads -eq '0' ]]; then
         isthreads=0
 else
         isthreads=1
