@@ -6,7 +6,7 @@ curentLocation=`pwd`
 cd $folderName
 make > /dev/null
 cheakVal=$?
-if [ cheakVal -gt 0 ]; then
+if [[ $cheakVal -gt 0 ]]; then
         echo "Compilation Error"
         exit 7
 else
