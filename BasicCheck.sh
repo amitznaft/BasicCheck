@@ -13,7 +13,7 @@ else
         echo "Compilation Pass"
 fi
 
-valgrind —-leak-check=full —-error-exitcode=1 --log-file=/dev/null ./$executeble $@
+valgrind —-leak-check=full —-error-exitcode=1 ./$executeble $@ &> /dev/null
 valout=$?
 if [[ valout -eq '0' ]]; then
         leaks=0
