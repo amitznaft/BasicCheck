@@ -25,7 +25,7 @@ fi
 valgrind --tool=helgrind —-error-exitcode=1 --log-file=/dev/null ./$executeble
 threads=$?
 
-if [ $threads -eq 0 ]; then
+if [[ $threads -eq 0 ]]; then
         isthreads=0
 else
         isthreads=1
