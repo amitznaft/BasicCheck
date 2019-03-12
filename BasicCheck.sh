@@ -13,10 +13,10 @@ else
         echo "Compilation Pass"
 fi
 
-valgrind —-leak-check=full —-error-exitcode=1 ./$executeble $@ &> /dev/null
+valgrind —-leak-check=full --error-exitcode=1 ./$executeble $@ &> /dev/null
 valout=$?
 
-valgrind --tool=helgrind —-error-exitcode=1 --log-file=/dev/null ./$executeble
+valgrind --tool=helgrind —-error-exitcode=1 ./$executeble $@ &> /dev/null
 threads=$?
 
 if [[ $valout -eq 1 ]] && [[ $threads -eq 1 ]]; then
