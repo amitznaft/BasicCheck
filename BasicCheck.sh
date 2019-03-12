@@ -1,50 +1,45 @@
 #!/bin/bash
 folderName=$1
-executeble=$2
+executable=$2
+currentLocation=`pwd`
 shift 2
-curentLocation=`pwd`
 cd $folderName
-make > /dev/null
-cheakVal=$?
-if [ “$cheakVal” -gt “0” ]; then
-        echo "Compilation Error"
+make
+isMake=$?
+if [ "$isMake" -gt "0" ] ; then
+        echo "Compilation FAIL"
         exit 7
+fi
+
+
+valgrind --leak-check=full --error-exitcode=1 ./$executable $@ &> /dev/null
+valgrindgout=$?
+if [ "$valgrindgout" -eq "0" ] ; then
+        error=0
 else
-        echo "Compilation Pass"
+        error=1
 fi
 
-valgrind —-leak-check=full --error-exitcode=1 ./$executeble $@ &> /dev/null
-valout=$?
-if [ “$valout” -eq “0” ] ; then
-	er=0
-else 
-	er=1
-fi
-
-valgrind --tool=helgrind —-error-exitcode=1 ./$executeble $@ &> /dev/null
-threads=$?
-if [ “$threads” -eq “0” ] ; then
-	et=0
-else 
-	et=1
-fi
-
-
-valthr=$er$et
-if [ "$valthr" -eq "11" ] ; then
-        echo "Compilation PASS , Memory leaks:FAIL, thread race: FAIL"
-	cd $currentLocation
-        exit 3
-elif [ "$valthr" -eq "01" ] ; then
-        echo "Compilation PASS , Memory leaks:PASS, thread race:FAIL"
-	cd $currentLocation
-	exit 1
-elif [ "$valthr" -eq "10" ] ; then
-        echo "Compilation PASS , Memory leaks:FAIL , thred race : PASS"
-	cd $currentLocation
-        exit 2
+valgrind --tool=helgrind --error-exitcode=1 ./$executable $@ &> /dev/null
+race=$?
+if [ "$race" -eq "0" ] ; then
+        isRace=0
 else
-        echo "Compilation PASS , Memory leaks :PASS , thred race :PASS"
-	cd $currentLocation
+        isRace=1
+fi
+
+
+status=$error$isRace
+if [ "$status" -eq "00" ] ; then
+        echo "Compilation PASS  Memory leaks PASS       Tread race PASS"
         exit 0
+elif [ "$status" -eq "10" ] ; then
+        echo "Compilation PASS  Memory leaks FAIL       Tread race PASS"
+        exit 2
+elif [ "$status" -eq "01" ] ; then
+        echo "Compilation PASS  Memory leaks PASS       Tread race FAIL"
+        exit 1
+else
+        echo "Compilation PASS  Memory leaks FAIL       Tread race FAIL"
+        exit 3
 fi
