@@ -19,15 +19,15 @@ valout=$?
 valgrind --tool=helgrind —-error-exitcode=1 --log-file=/dev/null ./$executeble
 threads=$?
 
-if [ valout -eq 1 ] && [ threads -eq 1 ]; then
+if [[ $valout -eq 1 ]] && [[ $threads -eq 1 ]]; then
         echo "Memory leaks:FAIL, thread race: FAIL"
 	cd $currentLocation
         exit 3
-elif  [ valout -eq 0 ] && [ threads -eq 1 ]; then
+elif [[ $valout -eq 0 ]] && [[ $threads -eq 1 ]]; then
         echo "Memory leaks:PASS, thread race:FAIL"
 	cd $currentLocation
 	exit 1
-elif  [ valout -eq 1 ] && [ threads -eq 0 ]; then
+elif [[ $valout -eq 1 ]] && [[ $threads -eq 0 ]]; then
         echo "Memory leaks:FAIL , thred race : PASS"
 	cd $currentLocation
         exit 2
