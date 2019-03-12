@@ -34,7 +34,7 @@ strCat=$leaks$isthreads
 if [[ $strCat == '11' ]]; then
         echo "Memory leaks:FAIL, thread race: FAIL"
 	cd $currentLocation
-        exit 3
+        exit 9
 elif [[ $strCat == '01' ]]; then
         echo "Memory leaks:PASS, thread race:FAIL"
 	cd $currentLocation
