@@ -19,6 +19,9 @@ valout=$?
 valgrind --tool=helgrind —-error-exitcode=1 ./$executeble $@ &> /dev/null
 threads=$?
 
+echo $valout
+echo $threads
+
 if [[ $valout -eq 1 ]] && [[ $threads -eq 1 ]]; then
         echo "Memory leaks:FAIL, thread race: FAIL"
 	cd $currentLocation
