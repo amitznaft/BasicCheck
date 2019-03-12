@@ -13,7 +13,7 @@ else
         echo "Compilation Pass"
 fi
 
-valgrind --log-file=/dev/null ./$executeble $@
+valgrind —error-exitcode=1 —-leak-check=full-v ./$executeble $@
 valout=$?
 if [[ valout -eq '0' ]]; then
         leaks=0
@@ -22,7 +22,7 @@ else
 
 fi
 
-valgrind --tool=helgrind --log-file=/dev/null ./$executeble
+valgrind —error-exitcode=1 —tool=helgrind ./$executeble
 threads=$?
 
 if [[ threads -eq '0' ]]; then
