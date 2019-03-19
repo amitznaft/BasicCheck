@@ -16,30 +16,30 @@ if [ "$isMake" -gt "0" ] ; then
 fi
 
 valgrind --leak-check=full --error-exitcode=1 ./$executable $@ &> /dev/null
-valgrindgout=$?
-if [ "$valgrindgout" -eq "0" ] ; then
-        error=0
+valout=$?
+if [ "$valout" -eq "0" ] ; then
+        errorval=0
 else
-        error=1
+        errorval=1
 fi
 
 valgrind --tool=helgrind --error-exitcode=1 ./$executable $@ &> /dev/null
-race=$?
-if [ "$race" -eq "0" ] ; then
-        isRace=0
+halout=$?
+if [ "$halout" -eq "0" ] ; then
+        errorhal=0
 else
-        isRace=1
+        errorhal=1
 fi
 
 
-status=$error$isRace
-if [ "$status" -eq "00" ] ; then
+check=$errorval$errorhal
+if [ "$check" -eq "00" ] ; then
         echo "Compilation PASS  Memory leaks PASS       Tread race PASS"
         exit 0
-elif [ "$status" -eq "10" ] ; then
+elif [ "$check" -eq "10" ] ; then
         echo "Compilation PASS  Memory leaks FAIL       Tread race PASS"
         exit 2
-elif [ "$status" -eq "01" ] ; then
+elif [ "$check" -eq "01" ] ; then
         echo "Compilation PASS  Memory leaks PASS       Tread race FAIL"
         exit 1
 else
