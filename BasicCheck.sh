@@ -1,3 +1,7 @@
+#Names of team members:
+#Amit Znaft
+#Yuval Cohen
+
 #!/bin/bash
 folderName=$1
 executable=$2
